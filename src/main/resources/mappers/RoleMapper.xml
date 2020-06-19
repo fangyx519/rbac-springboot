@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rbac.dao.RoleDao" >
+
+    <resultMap id="RoleResultMap" type="com.rbac.entity.Role">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_desc" property="roleDesc" jdbcType="VARCHAR"/>
+        <result column="role_status" property="roleStatus" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="addRole" parameterType="com.rbac.entity.Role">
+        insert into role (id, role_code, role_name, role_desc, role_status)
+         values (#{id}, #{roleCode}, #{roleName}, #{roleDesc}, #{roleStatus})
+    </insert>
+
+    <delete id="deleteRole" parameterType="java.lang.Long">
+        delete from role where id = #{id}
+    </delete>
+
+    <update id="updateRole">
+        update role
+        set role_code = #{roleCode},
+            role_name = #{roleName},
+            role_desc = #{roleDesc},
+            role_status = #{roleStatus}
+        where id = #{id}
+    </update>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="RoleResultMap">
+        select id, role_code, role_name, role_desc, role_status
+        from role
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="RoleResultMap">
+        select id, role_code, role_name, role_desc, role_status
+        from role
+        where role_name = #{roleName}
+    </select>
+
+    <select id="selectAllRoles" parameterType="com.rbac.entity.Role" resultMap="RoleResultMap">
+        select id, role_code, role_name, role_desc, role_status
+        from role
+    </select>
+
+</mapper>

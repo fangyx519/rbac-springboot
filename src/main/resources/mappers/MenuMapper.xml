@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rbac.dao.MenuDao" >
+
+    <resultMap id="MenuResultMap" type="com.rbac.entity.Menu">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="menu_label" property="menuLabel" jdbcType="VARCHAR"/>
+        <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="is_leaf" property="isLeaf" jdbcType="SMALLINT"/>
+        <result column="menu_level" property="menuLevel" jdbcType="SMALLINT"/>
+        <result column="display_order" property="displayOrder" jdbcType="SMALLINT"/>
+        <result column="menu_seq" property="menuSEQ" jdbcType="VARCHAR"/>
+        <result column="res_code" property="resCode" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentsId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <insert id="addMenu" parameterType="com.rbac.entity.Menu">
+        insert into menu (id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id)
+        VALUES (#{id}, #{menuName}, #{menuLabel}, #{menuCode}, #{isLeaf}, #{menuLevel}, #{displayOrder}, #{menuSEQ}, #{resCode}, #{parentsId})
+    </insert>
+
+    <delete id="deleteMenu" parameterType="java.lang.Long">
+        delete from menu where id = #{id}
+    </delete>
+
+    <update id="updateMenu" parameterType="com.rbac.entity.Menu">
+        update menu
+        set menu_name = #{menuName},
+            menu_label = #{menuLabel},
+            menu_code = #{menuCode},
+            is_leaf = #{isLeaf},
+            menu_level = #{menuLevel},
+            display_order = #{displayOrder},
+            menu_seq = #{menuSEQ},
+            res_code = #{resCode},
+            parent_id = #{parentsId}
+        where id = #{id}
+    </update>
+
+    <select id="selectById" parameterType="java.lang.String">
+        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        from menu
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String">
+        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        from menu
+        where menu_name = #{menuName}
+    </select>
+
+    <select id="selectAllMenus" resultMap="MenuResultMap">
+        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        from menu
+    </select>
+</mapper>

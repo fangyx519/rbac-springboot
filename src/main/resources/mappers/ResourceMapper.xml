@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rbac.dao.ResourceDao" >
+
+    <resultMap id="ResourceResultMap" type="com.rbac.entity.Resource">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="res_code" property="resCode" jdbcType="VARCHAR"/>
+        <result column="res_name" property="resName" jdbcType="VARCHAR"/>
+        <result column="res_desc" property="resDesc" jdbcType="VARCHAR"/>
+        <result column="res_type" property="resType" jdbcType="VARCHAR"/>
+        <result column="res_url" property="resUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addResource" parameterType="com.rbac.entity.Resource">
+        insert into resource (id, res_code, res_name, res_desc, res_type, res_url)
+        values (#{id}, #{resCode}, #{resName}, #{resDesc}, #{resType}, #{resUrl})
+    </insert>
+
+    <delete id="deleteResource" parameterType="java.lang.Long">
+        delete from resource where id = #{id}
+    </delete>
+
+    <update id="updateResource">
+        update resource
+        set res_code = #{resCode},
+            res_name = #{resName},
+            res_desc = #{resDesc},
+            res_type = #{resType},
+            res_url = #{resUrl}
+        where id = #{id}
+    </update>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="ResourceResultMap">
+        select id, res_code, res_name, res_desc, res_type, res_url
+        from resource
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="ResourceResultMap">
+        select id, res_code, res_name, res_desc, res_type, res_url
+        from resource
+        where res_name = #{resName}
+    </select>
+
+    <select id="selectAllResources" parameterType="com.rbac.entity.Resource" resultMap="ResourceResultMap">
+        select id, res_code, res_name, res_desc, res_type, res_url
+        from resource
+    </select>
+
+</mapper>
