@@ -6,7 +6,7 @@ package com.rbac.entity;
  * @date 2020/6/17
  */
 public class Department {
-    private Long id;
+    private Long deptId;
 
     private String deptName;
 
@@ -20,25 +20,12 @@ public class Department {
 
     private Long parentId;
 
-    public Department() {
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public Department(Long id, String deptName, Integer deptStatus, Integer isLeaf, Integer deptLevel, String deptSEQ, Long parentId) {
-        this.id = id;
-        this.deptName = deptName;
-        this.deptStatus = deptStatus;
-        this.isLeaf = isLeaf;
-        this.deptLevel = deptLevel;
-        this.deptSEQ = deptSEQ;
-        this.parentId = parentId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public String getDeptName() {
@@ -89,16 +76,5 @@ public class Department {
         this.parentId = parentId;
     }
 
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", deptName='" + deptName + '\'' +
-                ", deptStatus=" + deptStatus +
-                ", isLeaf=" + isLeaf +
-                ", deptLevel=" + deptLevel +
-                ", deptSEQ='" + deptSEQ + '\'' +
-                ", parentId=" + parentId +
-                '}';
-    }
+
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rbac.dao.DepartmentDao" >
     <resultMap id="DepartmentResultMap" type="com.rbac.entity.Department" >
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="dept_id" property="deptId" jdbcType="BIGINT"/>
         <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
         <result column="dept_status" property="deptStatus" jdbcType="TINYINT"/>
         <result column="is_leaf" property="isLeaf" jdbcType="SMALLINT"/>
@@ -12,12 +12,12 @@
     </resultMap>
 
     <insert id="addDepartment" parameterType="com.rbac.entity.Department">
-        insert into department (id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id)
-        VALUES (#{id}, #{deptName}, #{deptStatus}, #{isLeaf}, #{deptLevel}, #{deptSEQ}, #{parentId})
+        insert into department (dept_id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id)
+        VALUES (#{deptId}, #{deptName}, #{deptStatus}, #{isLeaf}, #{deptLevel}, #{deptSEQ}, #{parentId})
     </insert>
 
     <delete id="deleteDepartment" parameterType="java.lang.Long">
-        delete from department where id = #{id}
+        delete from department where dept_id = #{deptId}
     </delete>
 
     <update id="updateDepartment" parameterType="com.rbac.entity.Department">
@@ -28,22 +28,25 @@
             dept_level = #{deptLevel},
             dept_seq = #{deptSEQ},
             parent_id = #{parentId}
-        where id = #{id}
+        where dept_id = #{deptId}
     </update>
 
     <select id="selectById" parameterType="java.lang.String">
-        select id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id
+        select dept_id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id
         from department
-        where id = #{id}
+        where dept_id = #{deptId}
     </select>
 
     <select id="selectByName" parameterType="java.lang.String">
-        select id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id
+        select dept_id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id
         from department
         where dept_name = #{deptName}
     </select>
 
     <select id="selectAllDepartments" resultMap="DepartmentResultMap">
-        select id, dept_name, dept_status, is_leaf, dept_level, dept_seq, parent_id from department
+        select dept_id, dept_name
+        from department
+        where dept_status = 1
     </select>
+
 </mapper>

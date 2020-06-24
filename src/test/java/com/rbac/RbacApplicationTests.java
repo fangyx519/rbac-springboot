@@ -47,7 +47,7 @@ class RbacApplicationTests {
 
         for (int i = 0; i < 11; i++) {
             Account account = new Account();
-            account.setId(""+i);
+            account.setUserId(""+i);
             account.setPassword("000000");
             account.setUserName("fang.yixin"+i);
             accountService.addAccount(account);

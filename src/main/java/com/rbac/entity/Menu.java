@@ -6,7 +6,7 @@ package com.rbac.entity;
  * @date 2020/6/17
  */
 public class Menu {
-    private Long id;
+    private Long menuId;
 
     private String menuName;
 
@@ -26,12 +26,12 @@ public class Menu {
 
     private Long parentsId;
 
-    public Long getId() {
-        return id;
+    public Long getMenuId() {
+        return menuId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 
     public String getMenuName() {
@@ -106,19 +106,5 @@ public class Menu {
         this.parentsId = parentsId;
     }
 
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "id=" + id +
-                ", menuName='" + menuName + '\'' +
-                ", menuLabel='" + menuLabel + '\'' +
-                ", menuCode='" + menuCode + '\'' +
-                ", isLeaf=" + isLeaf +
-                ", menuLevel=" + menuLevel +
-                ", displayOrder=" + displayOrder +
-                ", menuSEQ='" + menuSEQ + '\'' +
-                ", resCode='" + resCode + '\'' +
-                ", parentsId=" + parentsId +
-                '}';
-    }
+
 }

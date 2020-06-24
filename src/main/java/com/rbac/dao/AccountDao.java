@@ -21,12 +21,14 @@ public interface AccountDao {
      */
     int addAccount(Account account);
 
+    int addAccountRole(String userId, Long roleId);
+
     /**
      * 删除用户
-     * @param id
+     * @param userId
      * @return
      */
-    int deleteAccount(String id);
+    int deleteAccount(String userId);
 
     /**
      * 修改用户信息
@@ -37,10 +39,10 @@ public interface AccountDao {
 
     /**
      * 根据id查找用户，用于登录
-     * @param id
+     * @param userId
      * @return
      */
-    Account selectById(String id);
+    Account selectById(String userId);
 
     /**
      * 通过用户名查找用户，用于用户管理中的查询

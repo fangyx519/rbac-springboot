@@ -3,7 +3,7 @@
 <mapper namespace="com.rbac.dao.ResourceDao" >
 
     <resultMap id="ResourceResultMap" type="com.rbac.entity.Resource">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="res_id" property="resId" jdbcType="BIGINT"/>
         <result column="res_code" property="resCode" jdbcType="VARCHAR"/>
         <result column="res_name" property="resName" jdbcType="VARCHAR"/>
         <result column="res_desc" property="resDesc" jdbcType="VARCHAR"/>
@@ -12,12 +12,12 @@
     </resultMap>
 
     <insert id="addResource" parameterType="com.rbac.entity.Resource">
-        insert into resource (id, res_code, res_name, res_desc, res_type, res_url)
-        values (#{id}, #{resCode}, #{resName}, #{resDesc}, #{resType}, #{resUrl})
+        insert into resource (res_id, res_code, res_name, res_desc, res_type, res_url)
+        values (#{resId}, #{resCode}, #{resName}, #{resDesc}, #{resType}, #{resUrl})
     </insert>
 
     <delete id="deleteResource" parameterType="java.lang.Long">
-        delete from resource where id = #{id}
+        delete from resource where res_id = #{resId}
     </delete>
 
     <update id="updateResource">
@@ -27,23 +27,23 @@
             res_desc = #{resDesc},
             res_type = #{resType},
             res_url = #{resUrl}
-        where id = #{id}
+        where res_id = #{resId}
     </update>
 
     <select id="selectById" parameterType="java.lang.Long" resultMap="ResourceResultMap">
-        select id, res_code, res_name, res_desc, res_type, res_url
+        select res_id, res_code, res_name, res_desc, res_type, res_url
         from resource
-        where id = #{id}
+        where res_id = #{resId}
     </select>
 
     <select id="selectByName" parameterType="java.lang.String" resultMap="ResourceResultMap">
-        select id, res_code, res_name, res_desc, res_type, res_url
+        select res_id, res_code, res_name, res_desc, res_type, res_url
         from resource
         where res_name = #{resName}
     </select>
 
     <select id="selectAllResources" parameterType="com.rbac.entity.Resource" resultMap="ResourceResultMap">
-        select id, res_code, res_name, res_desc, res_type, res_url
+        select res_id, res_code, res_name, res_desc, res_type, res_url
         from resource
     </select>
 

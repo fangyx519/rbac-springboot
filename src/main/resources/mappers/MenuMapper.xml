@@ -3,7 +3,7 @@
 <mapper namespace="com.rbac.dao.MenuDao" >
 
     <resultMap id="MenuResultMap" type="com.rbac.entity.Menu">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="menu_id" property="menuId" jdbcType="BIGINT"/>
         <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
         <result column="menu_label" property="menuLabel" jdbcType="VARCHAR"/>
         <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
@@ -16,12 +16,12 @@
     </resultMap>
 
     <insert id="addMenu" parameterType="com.rbac.entity.Menu">
-        insert into menu (id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id)
-        VALUES (#{id}, #{menuName}, #{menuLabel}, #{menuCode}, #{isLeaf}, #{menuLevel}, #{displayOrder}, #{menuSEQ}, #{resCode}, #{parentsId})
+        insert into menu (menu_id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id)
+        VALUES (#{menuId}, #{menuName}, #{menuLabel}, #{menuCode}, #{isLeaf}, #{menuLevel}, #{displayOrder}, #{menuSEQ}, #{resCode}, #{parentsId})
     </insert>
 
     <delete id="deleteMenu" parameterType="java.lang.Long">
-        delete from menu where id = #{id}
+        delete from menu where menu_id = #{menuId}
     </delete>
 
     <update id="updateMenu" parameterType="com.rbac.entity.Menu">
@@ -35,23 +35,23 @@
             menu_seq = #{menuSEQ},
             res_code = #{resCode},
             parent_id = #{parentsId}
-        where id = #{id}
+        where menu_id = #{menuId}
     </update>
 
     <select id="selectById" parameterType="java.lang.String">
-        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        select menu_id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
         from menu
-        where id = #{id}
+        where menu_id = #{menuId}
     </select>
 
     <select id="selectByName" parameterType="java.lang.String">
-        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        select menu_id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
         from menu
         where menu_name = #{menuName}
     </select>
 
     <select id="selectAllMenus" resultMap="MenuResultMap">
-        select id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
+        select menu_id, menu_name, menu_label, menu_code, is_leaf, menu_level, display_order, menu_seq, res_code, parent_id
         from menu
     </select>
 </mapper>

@@ -1,18 +1,16 @@
 package com.rbac.controller;
 
-import com.rbac.entity.Account;
-import com.rbac.entity.JsonResult;
-import com.rbac.entity.ResponseJson;
+import com.alibaba.fastjson.JSON;
+import com.rbac.entity.*;
 import com.rbac.enums.AccountEnum;
 import com.rbac.service.AccountService;
 import com.rbac.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,15 +72,37 @@ public class AccountController {
 
     /**
      * 新增用户相当于新增员工，必须用管理员新增
-     * @param account
+     * @param
      * @return
      */
-    public JsonResult addAccount(Account account){
-        int addAccount = accountService.addAccount(account);
-        if (addAccount == 1){
-            return new JsonResult("新增成功!");
+    @PostMapping("/addAccount")
+    @ResponseBody
+    public int addAccount(@RequestBody Map<String,String> data){
+        // 从前端接收到的值
+        String userName = data.get("userName");
+        int userStatus = Integer.valueOf(data.get("userStatus"));
+        long deptId = Long.valueOf(data.get("departmentId"));
+        String[] roleIds = data.get("role").split(",");
+
+        // 将接收到的值封装成对象
+        Department department = new Department();
+        department.setDeptId(deptId);
+
+        List<Role> roleList = new ArrayList<>();
+
+        for (String roleId : roleIds){
+            Role role = new Role();
+            role.setRoleId(Long.valueOf(roleId));
+            roleList.add(role);
         }
-        return new JsonResult("新增失败!");
+
+        Account account = new Account();
+        account.setUserName(userName);
+        account.setUserStatus(userStatus);
+        account.setDepartment(department);
+        account.setRole(roleList);
+
+        return accountService.addAccount(account);
     }
 
     public JsonResult deleteAccount(String id){

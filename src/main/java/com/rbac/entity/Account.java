@@ -1,12 +1,14 @@
 package com.rbac.entity;
 
+import java.util.List;
+
 /**
  * @author fang.yixin
  * @description 用户信息
  * @date 2020/6/17
  */
 public class Account {
-    private String id;
+    private String userId;
 
     private String password;
 
@@ -16,14 +18,16 @@ public class Account {
 
     private Department department;
 
+    private List<Role> role;
+
     private Integer errorCounts;
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -66,15 +70,12 @@ public class Account {
         this.department = department;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userStatus=" + userStatus +
-                ", department=" + department +
-                ", errorCounts=" + errorCounts +
-                '}';
+    public List<Role> getRole() {
+        return role;
     }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
+    }
+
 }

@@ -29,4 +29,9 @@ public class DispatcherServletController {
         return "login";
     }
 
+    @GetMapping("/accountAdd")
+    public String accountAdd(){
+        return "account-add";
+    }
+
 }

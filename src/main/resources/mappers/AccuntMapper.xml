@@ -3,24 +3,35 @@
 <mapper namespace="com.rbac.dao.AccountDao" >
 
     <resultMap id="AccountResultMap" type="com.rbac.entity.Account">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="user_status" property="userStatus" jdbcType="TINYINT"/>
         <result column="error_counts" property="errorCounts" jdbcType="SMALLINT"/>
 
         <association property="department" javaType="com.rbac.entity.Department">
-            <id column="id" property="id" jdbcType="BIGINT"/>
+            <id column="dept_id" property="deptId" jdbcType="BIGINT"/>
             <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
         </association>
+
+        <collection property="role" ofType="com.rbac.entity.Role">
+            <id column="role_id" property="roleId" jdbcType="BIGINT"/>
+            <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        </collection>
+
     </resultMap>
 
     <insert id="addAccount" parameterType="com.rbac.entity.Account">
-        insert into account (id, password, user_name) values (#{id}, #{password}, #{userName})
+        insert into account(user_id, password, user_name, user_status, dept_id)
+        VALUES(#{userId}, #{password}, #{userName}, #{userStatus}, #{department.deptId})
+    </insert>
+
+    <insert id="addAccountRole">
+        insert into account_role (user_id, role_id) VALUES (#{userId}, #{roleId})
     </insert>
 
     <delete id="deleteAccount" parameterType="java.lang.String">
-        delete from account where id = #{id}
+        delete from account where user_id = #{userId}
     </delete>
 
     <update id="updateAccount">
@@ -29,19 +40,23 @@
             user_name = #{userName},
             user_status = #{userStatus},
             error_counts = #{errorCounts}
-        where id = #{id}
+        where user_id = #{userId}
     </update>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="AccountResultMap">
-        select id, password, user_name, user_status, error_counts from account where id = #{id}
+        select user_id, password, user_name, user_status, error_counts from account where user_id = #{userId}
     </select>
     
     <select id="selectByName" parameterType="java.lang.String" resultMap="AccountResultMap">
-        select id, password, user_name, user_status, error_counts from account where user_name = #{userName}
+        select user_id, password, user_name, user_status, error_counts from account where user_name = #{userName}
     </select>
 
     <select id="selectAllAccounts" parameterType="com.rbac.entity.Account" resultMap="AccountResultMap">
-        select id, password, user_name, user_status, error_counts from account
+        SELECT account.user_id, account.user_name, account.user_status,role.role_id, role.role_name,department.dept_id, department.dept_name
+        FROM account LEFT JOIN account_role on account.user_id = account_role.user_id
+                     LEFT JOIN role on account_role.role_id = role.role_id
+                     LEFT JOIN department on account.dept_id = department.dept_id
+
     </select>
 
 </mapper>

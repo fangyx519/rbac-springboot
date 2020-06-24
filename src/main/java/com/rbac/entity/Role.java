@@ -6,7 +6,7 @@ package com.rbac.entity;
  * @date 2020/6/17
  */
 public class Role {
-    private Long id;
+    private Long roleId;
 
     private String roleCode;
 
@@ -16,12 +16,12 @@ public class Role {
 
     private Integer roleStatus;
 
-    public Long getId() {
-        return id;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleCode() {
@@ -56,14 +56,4 @@ public class Role {
         this.roleStatus = roleStatus;
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleCode='" + roleCode + '\'' +
-                ", roleName='" + roleName + '\'' +
-                ", roleDesc='" + roleDesc + '\'' +
-                ", roleStatus=" + roleStatus +
-                '}';
-    }
 }

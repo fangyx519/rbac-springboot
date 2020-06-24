@@ -56,4 +56,5 @@ public interface DepartmentDao {
      */
     List<Department> selectAllDepartments();
 
+
 }

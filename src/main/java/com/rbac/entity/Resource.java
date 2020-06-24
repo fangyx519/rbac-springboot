@@ -6,7 +6,7 @@ package com.rbac.entity;
  * @date 2020/6/17
  */
 public class Resource {
-    private Long id;
+    private Long resId;
 
     private String resCode;
 
@@ -18,12 +18,12 @@ public class Resource {
 
     private String resUrl;
 
-    public Long getId() {
-        return id;
+    public Long getResId() {
+        return resId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setResId(Long resId) {
+        this.resId = resId;
     }
 
     public String getResCode() {
@@ -66,15 +66,4 @@ public class Resource {
         this.resUrl = resUrl;
     }
 
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "id=" + id +
-                ", resCode='" + resCode + '\'' +
-                ", resName='" + resName + '\'' +
-                ", resDesc='" + resDesc + '\'' +
-                ", resType='" + resType + '\'' +
-                ", resUrl='" + resUrl + '\'' +
-                '}';
-    }
 }
