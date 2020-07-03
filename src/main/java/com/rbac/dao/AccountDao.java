@@ -55,6 +55,8 @@ public interface AccountDao {
      * 查找所有的账户，用于用户管理中的列表展示
      * @return
      */
-    List<Account> selectAllAccounts();
+    List<Account> selectAllAccounts(int start, int end);
+
+    int countAllAccounts();
 
 }

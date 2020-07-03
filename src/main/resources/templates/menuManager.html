@@ -86,64 +86,41 @@
 
     <script charset="utf-8" src="../static/layui.js"></script>
     <script>
-        var editData;
+        let editData;
         layui.use('table', function () {
-            var form = layui.form;
-            var table = layui.table;
-            //监听表格复选框选择
-            table.on('checkbox(accountTable)', function (obj) {
-                console.log(obj)
-            });
+            const $ = layui.$;
+            const table = layui.table;
 
-            //监听工具条
+            //监听工具条（编辑，删除操作）
             table.on('tool(accountTable)', function (obj) {
-                var data = obj.data;
-                if (obj.event === 'detail') {
-                    layer.msg('ID：' + data.id + ' 的查看操作');
-                } else if (obj.event === 'del') {
+                const data = obj.data;
+                if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
                         obj.del();
                         layer.close(index);
                     });
+
                 } else if (obj.event === 'edit') {
-                    // layer.alert("编辑行：" + JSON.stringify(data));
-                    // layer.alert("编辑行：" + data.roleName);
                     layer.open({
                         type: 2
-                        ,offset: "auto" //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,id: 'layerDemo'+"auto" //防止重复弹出
+                        ,offset: "auto"
+                        ,id: 'layerDemo'+"auto"
                         ,title: '用户配置'
                         ,content: '/page/accountEdit'
                         ,area: ['500px','450px']
-                        // ,closeBtn: 1
-                        // ,btn: '提交'
-                        // ,btnAlign: 'c' //按钮居中
                         ,shade: 0 //不显示遮罩
                         ,success: function(layero, index){
                             editData = data;
-
-                            // layui.table.reload('accountTable');
-                            // layer.close(index);
-
-                            var body=layer.getChildFrame('body',index);
-                            // //获取子页面的元素，进行数据渲染
-                            // body.contents().find("#userName").val(data.userName);
-                            // body.contents().find('#dept').val(data.department.deptId);
-                            // body.contents().find('#attributeId').val(data.attributeId);
-                            // body.contents().find('#remark').val(data.remark);
-                            // body.contents().find('#remarkEn').val(data.remarkEn);
-                            // let id = '#isValid' + data.isValid;
-                            // body.contents().find(id).prop("checked", true);//这是子页面的单选按钮，让其选中
-
-                            }
+                        }
 
                     });
                 }
             });
 
+            // 初始化渲染
             table.render({
                 elem: '#accountTable'
-                , url: '/account/queryAllAccounts' //数据接口
+                , url: '/dept/getAllDepts' //数据接口
                 , method: 'post'
                 , page: true //开启分页
                 , limit: 10
@@ -172,32 +149,13 @@
                 },
             });
 
-            var $ = layui.$
-            var active = {
-                getCheckData: function () { //获取选中数据
-                    var checkStatus = table.checkStatus('idTest')
-                        , data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
-                }
-                , getCheckLength: function () { //获取选中数目
-                    var checkStatus = table.checkStatus('idTest')
-                        , data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                }
-                , isAll: function () { //验证是否全选
-                    var checkStatus = table.checkStatus('idTest');
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选')
-                }
-            };
 
-            $('.demoTable .layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
-            });
+
         });
 
-        layui.use('layer', function(){ //独立版的layer无需执行这一句
-            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+        // 新增
+        layui.use('layer', function(){
+            var $ = layui.jquery, layer = layui.layer;
 
             //触发事件
             var active = {
@@ -207,26 +165,16 @@
 
                     layer.open({
                         type: 2
-                        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,id: 'layerDemo'+type //防止重复弹出
+                        ,offset: type
+                        ,id: 'layerDemo'+type
                         ,title: '新增用户'
                         ,content: '/page/accountAdd'
                         ,area: ['500px','510px']
                         ,closeBtn: 1
-                        // ,btn: '关闭全部'
-                        // ,btnAlign: 'c' //按钮居中
-                        ,shade: 0 //不显示遮罩
-                        ,yes: function(){
-                            layer.closeAll();
-                        }
                     });
                 }
             };
 
-            $('#layerDemo .layui-btn').on('click', function(){
-                var othis = $(this), method = othis.data('method');
-                active[method] ? active[method].call(this, othis) : '';
-            });
 
         });
     </script>

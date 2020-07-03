@@ -78,6 +78,7 @@ public class AccountController {
     @PostMapping("/addAccount")
     @ResponseBody
     public int addAccount(@RequestBody Map<String,String> data){
+        System.out.println(data);
         // 从前端接收到的值
         String userName = data.get("userName");
         int userStatus = Integer.valueOf(data.get("userStatus"));
@@ -102,7 +103,16 @@ public class AccountController {
         account.setDepartment(department);
         account.setRole(roleList);
 
-        return accountService.addAccount(account);
+        accountService.addAccount(account);
+        return 1;
+    }
+
+    @PostMapping("/editAccount")
+    @ResponseBody
+    public int editAccount(@RequestBody Map<String,String> data){
+        System.out.println(data);
+
+        return 1;
     }
 
     public JsonResult deleteAccount(String id){
@@ -121,18 +131,14 @@ public class AccountController {
         return new JsonResult("重置失败!");
     }
 
-    @GetMapping("/queryAllAccounts")
+    @PostMapping("/queryAllAccounts")
     @ResponseBody
-    public ResponseJson selectAllAccounts(){
+    public ResponseJson selectAllAccounts(int page, int size) {
         ResponseJson responseJson = new ResponseJson<Account>();
-        responseJson.setStatus(200);
         responseJson.setCode(0);
         responseJson.setMessage("");
-        responseJson.setTotal(1);
-        responseJson.setData(accountService.selectAllAccounts());
-        /*Map<String, List<Account>> map = new HashMap<>();
-        map.put("data",accountService.selectAllAccounts());*/
-        //responseJson.setRows(map);
+        responseJson.setCount(accountService.countAllAccounts());
+        responseJson.setData(accountService.selectAllAccounts(page, size));
 
         return responseJson;
     }

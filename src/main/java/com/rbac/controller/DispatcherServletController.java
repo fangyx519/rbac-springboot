@@ -3,7 +3,6 @@ package com.rbac.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author fang.yixin
@@ -32,6 +31,35 @@ public class DispatcherServletController {
     @GetMapping("/accountAdd")
     public String accountAdd(){
         return "account-add";
+    }
+
+    @GetMapping("/accountEdit")
+    public String accountEdit(){
+        return "account-edit";
+    }
+
+    // ********** department **************
+    @GetMapping("/deptManager")
+    public String department(){
+        return "deptManager";
+    }
+
+    // ********** role **************
+    @GetMapping("/roleManager")
+    public String role(){
+        return "roleManager";
+    }
+
+    // ********** menu **************
+    @GetMapping("/menuManager")
+    public String menu(){
+        return "menuManager";
+    }
+
+    // ********** auth **************
+    @GetMapping("/authManager")
+    public String auth(){
+        return "authManager";
     }
 
 }

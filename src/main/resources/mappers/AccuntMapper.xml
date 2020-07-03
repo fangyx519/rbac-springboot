@@ -51,12 +51,19 @@
         select user_id, password, user_name, user_status, error_counts from account where user_name = #{userName}
     </select>
 
-    <select id="selectAllAccounts" parameterType="com.rbac.entity.Account" resultMap="AccountResultMap">
+    <select id="selectAllAccounts" parameterType="java.lang.Integer" resultMap="AccountResultMap">
         SELECT account.user_id, account.user_name, account.user_status,role.role_id, role.role_name,department.dept_id, department.dept_name
         FROM account LEFT JOIN account_role on account.user_id = account_role.user_id
                      LEFT JOIN role on account_role.role_id = role.role_id
                      LEFT JOIN department on account.dept_id = department.dept_id
+        limit #{start},#{end}
+    </select>
 
+    <select id="countAllAccounts" resultType="java.lang.Integer" >
+        SELECT count(*)
+        FROM account LEFT JOIN account_role on account.user_id = account_role.user_id
+                     LEFT JOIN role on account_role.role_id = role.role_id
+                     LEFT JOIN department on account.dept_id = department.dept_id
     </select>
 
 </mapper>

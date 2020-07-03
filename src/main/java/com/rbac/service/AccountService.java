@@ -31,9 +31,15 @@ public class AccountService {
         return accountDao.selectById(id);
     }
 
-    public List<Account> selectAllAccounts(){
-        List<Account> accounts = accountDao.selectAllAccounts();
+    public List<Account> selectAllAccounts(int page, int size){
+        int start = (page-1)*size + 1;
+        int end = page * size;
+        List<Account> accounts = accountDao.selectAllAccounts(start, end);
         return accounts;
+    }
+
+    public int countAllAccounts(){
+        return accountDao.countAllAccounts();
     }
 
     public void updateAccount(Account account){

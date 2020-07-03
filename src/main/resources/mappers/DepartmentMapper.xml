@@ -44,9 +44,8 @@
     </select>
 
     <select id="selectAllDepartments" resultMap="DepartmentResultMap">
-        select dept_id, dept_name
+        select dept_id, dept_name, dept_status
         from department
-        where dept_status = 1
     </select>
 
 </mapper>

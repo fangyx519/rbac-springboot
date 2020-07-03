@@ -11,25 +11,33 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<div class="layui-main" style="width: 400px;height: 300px; margin-top: 50px;">
-    <form class="layui-form" action="" lay-filter="form">
+<div class="layui-main" style="width: 400px;height: 200px; margin-top: 50px;">
+    <form class="layui-form" action="" lay-filter="editAccountForm">
         <div class="layui-form-item">
-            <label class="layui-form-label">姓名</label>
+            <label class="layui-form-label">ID：</label>
             <div class="layui-input-inline">
-                <input type="text" name="userName" lay-verify="userName"
+                <input type="text" id="userId" name="userId" lay-verify="userId"
+                       autocomplete="off" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline">
+                <input type="text" id="userName" name="userName" lay-verify="userName"
                        autocomplete="off" placeholder="请输入姓名" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">部门</label>
+            <label class="layui-form-label">部门：</label>
             <div class="layui-input-inline" id="parentDept" lay-filter="selectDepartment">
                 <select name="departmentId" id="dept"></select>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
+            <label class="layui-form-label">状态：</label>
             <div class="layui-input-block">
                 <input type="checkbox" checked="" id="userStatus" name="userStatus" lay-verify="userStatus"
                        lay-skin="switch" lay-filter="switchTest" lay-text="正常|禁用" value="1">
@@ -37,8 +45,9 @@
         </div>
 
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label">角色</label>
-            <div class="layui-input-block" id="role">
+            <label class="layui-form-label">角色：</label>
+            <div class="layui-input-inline" id="" lay-filter="selectRole">
+                <select name="roleId" id="role"></select>
                 <!--<input type='radio' name='sex' value='系统管理员' title='系统管理员' checked=''>-->
             </div>
         </div>
@@ -47,7 +56,7 @@
             <div class="layui-input-block">
                 <!--<button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">赋值</button>
                 <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">取值</button>-->
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="addAccount">提交</button>
+                <input type="button" class="layui-btn" lay-submit lay-filter="editAccount" value="提交">
                 <button type="button" class="layui-btn" onclick="closeWindow()">关闭</button>
             </div>
         </div>
@@ -79,19 +88,17 @@
             }
         });
 
-        //监听提交
-        form.on('submit(addAccount)', function(formData){
+        // //监听提交
+        form.on('submit(editAccount)', function(formData){
             let data = formData.field;
-            data.role = getCheckBoxValue();
-            data.userStatus = $("#userStatus").val() == 1 ? 1:0;
+            // data.role = getCheckBoxValue();
             $.ajax({
                 type: "post",
-                url: "/account/addAccount",
+                url: "/account/editAccount",
                 data:JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
-                    // 没有走到这里
                     if (result == 1){
                         alert("新增成功");
                         parent.location.reload();//刷新父页面
@@ -118,6 +125,20 @@
             alert(JSON.stringify(data));
         });
 
+        // $("#userName").val(parent.editData.userName);
+        // $("#userStatus").val(parent.editData.userStatus);
+
+        // 页面初始化赋值
+        $().ready(function(){
+            $("#userId").val(parent.editData.userId);
+            $("#userName").val(parent.editData.userName);
+            if (parent.editData.userStatus != 1){
+                $("#userStatus").removeAttr("checked");
+            }
+            form.render();
+        });
+
+        // 渲染部门列表并选中值
         $.ajax({
             type: "get",
             url: "/dept/getDepts",
@@ -126,11 +147,18 @@
                 for (var index = 0;index < data.length;index++){
                     var dataTmp = data[index];
                     $('#dept').append(new Option(dataTmp.deptName,dataTmp.deptId));//往下拉菜单里添加元素
+                    $('#dept').val(parent.editData.department.deptId);
                 }
+                // console.log(parent.editData);
+                // $("#userName").val(parent.editData.userName);
+                // if (parent.editData.userStatus != 1){
+                //     $("#userStatus").removeAttr("checked");
+                // }
                 form.render();
             }
         });
 
+        // 渲染角色列表并选中值
         $.ajax({
             type: "get",
             url: "/role/getRoles",
@@ -138,14 +166,15 @@
             success: function (data) {
                 for (var index = 0;index < data.length;index++){
                     var dataTmp = data[index];
-                    $('#role').append("<input type='checkbox' name='role' value='"+dataTmp.roleId+"' title='"+dataTmp.roleName+"' lay-skin='primary'>");//往下拉菜单里添加元素
+                    $('#role').append(new Option(dataTmp.roleName,dataTmp.roleId));//往下拉菜单里添加元素
+                    $('#role').val(parent.editData.role[0].roleId);
                 }
                 form.render();
             }
         });
 
     });
-    
+
     function getCheckBoxValue() {
         const checkbox = $("input[name='role']");
         let roleId = '';
@@ -160,7 +189,7 @@
             }
         });
         console.log(roleId);
-       return roleId;
+        return roleId;
     }
 
     function closeWindow() {

@@ -13,6 +13,7 @@ public class ResponseJson<T> {
     private int code;
     private String message;
     private int total;
+    private int count;
     private List<T> data;
     private Map<String, List<T>> rows;
 
@@ -62,5 +63,13 @@ public class ResponseJson<T> {
 
     public void setData(List<T> data) {
         this.data = data;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
