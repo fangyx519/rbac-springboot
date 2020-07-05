@@ -14,30 +14,9 @@
             <!--搜索条件的地方-->
             <form class="layui-form layui-col-md10" action="">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户名：</label>
+                    <label class="layui-form-label">资源编码：</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" type="text" name="" width="80px" placeholder="请输入用户名">
-                    </div>
-
-
-
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">部门：</label>
-                    <div class="layui-input-inline">
-                        <select name="interest" lay-filter="aihao">
-                            <option value="0">写作</option>
-                            <option value="1">阅读</option>
-                        </select>
-                    </div>
-
-                    <label class="layui-form-label">角色：</label>
-                    <div class="layui-input-inline">
-                        <select name="interest" lay-filter="aihao">
-                            <option value="0">写作</option>
-                            <option value="1">阅读</option>
-                        </select>
+                        <input class="layui-input" type="text" name="" width="80px" placeholder="请输入资源编码">
                     </div>
 
                     <div class="layui-input-inline layui-btn-container" style="margin-left: 50px">
@@ -49,24 +28,14 @@
 
             <div class="layui-col-md2" id="layerDemo">
                 <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">
-                        <i class="layui-icon">&#xe608;</i> 添加用户
+                        <i class="layui-icon">&#xe608;</i> 添加资源
                 </button>
             </div>
 
         </div>
 
-        <table class="layui-table" id="accountTable"
-               lay-filter="accountTable" lay-skin="line">
-<!--            <thead> lay-data="{ url:'/account/queryAllAccounts', page:true, limit:10, id:'test'}"-->
-<!--            <tr>-->
-<!--                <th lay-data="{field:'userId', align:'center', sort: true}">用户ID</th>-->
-<!--                <th lay-data="{field:'userName', align:'center'}">用户名称</th>-->
-<!--                <th lay-data="{field:'deptName', align:'center', templet: '<div>{{d.department.deptName != null ? d.department.deptName : \'\'}}</div>'}">部门名称</th>-->
-<!--                <th lay-data="{field:'userStatus', align:'center', templet: '#switchTpl'}">用户状态</th>-->
-<!--                <th lay-data="{field:'roleName', align:'center', templet: '<div>{{d.role[0].roleName != null ? d.role[0].roleName : \'\'}}</div>'}">用户角色</th>-->
-<!--                <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
+        <table class="layui-table" id="resTable"
+               lay-filter="resTable" lay-skin="line">
         </table>
     </div>
 
@@ -79,10 +48,6 @@
         </a>
     </script>
 
-    <script type="text/html" id="switchTpl">
-        <input type="checkbox" name="userStatusSwitch" value="{{d.userStatus}}" lay-skin="switch" lay-text="正常|停用" disabled {{ d.userStatus == '1' ? 'checked' : '' }}/>
-    </script>
-
 
     <script charset="utf-8" src="../static/layui.js"></script>
     <script>
@@ -92,7 +57,7 @@
             const table = layui.table;
 
             //监听工具条（编辑，删除操作）
-            table.on('tool(accountTable)', function (obj) {
+            table.on('tool(resTable)', function (obj) {
                 const data = obj.data;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
@@ -106,7 +71,7 @@
                         ,offset: "auto"
                         ,id: 'layerDemo'+"auto"
                         ,title: '用户配置'
-                        ,content: '/page/accountEdit'
+                        ,content: '/page/resEdit'
                         ,area: ['500px','450px']
                         ,shade: 0 //不显示遮罩
                         ,success: function(layero, index){
@@ -119,18 +84,18 @@
 
             // 初始化渲染
             table.render({
-                elem: '#accountTable'
-                , url: '/dept/getAllDepts' //数据接口
+                elem: '#resTable'
+                , url: '/dept/getAllResources' //数据接口
                 , method: 'post'
                 , page: true //开启分页
                 , limit: 10
                 , cols: [
                     [
-                        { field:'userId', title: '用户ID', align:'center', sort: true},
-                        { field:'userName', title: '用户名称', align:'center'},
-                        { field:'deptName', title: '部门名称', align:'center', templet: '<div>{{d.department.deptName != null ? d.department.deptName : \'\'}}</div>'},
-                        { field:'userStatus', title: '用户状态', align:'center', templet: '#switchTpl'},
-                        { field:'roleName', title: '用户角色', align:'center', templet: '<div>{{d.role[0].roleName != null ? d.role[0].roleName : \'\'}}</div>'},
+                        { field:'resId', title: '资源ID', align:'center', sort: true},
+                        { field:'resName', title: '资源名称', align:'center'},
+                        { field:'resCode', title: '资源编码', align:'center'},
+                        { field:'resUrl', title: '资源路径', align:'center'},
+                        { field:'resDesc', title: '描述', align:'center'},
                         { fixed: 'right', title: '操作', width:178, align:'center', toolbar: '#barDemo'}
                     ]
                 ],
@@ -168,7 +133,7 @@
                         ,offset: type
                         ,id: 'layerDemo'+type
                         ,title: '新增用户'
-                        ,content: '/page/accountAdd'
+                        ,content: '/page/resAdd'
                         ,area: ['500px','510px']
                         ,closeBtn: 1
                     });

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>用户管理</title>
+    <title>角色管理</title>
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
@@ -14,60 +14,30 @@
             <!--搜索条件的地方-->
             <form class="layui-form layui-col-md10" action="">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户名：</label>
+                    <label class="layui-form-label">角色名称：</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" type="text" name="" width="80px" placeholder="请输入用户名">
-                    </div>
-
-
-
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">部门：</label>
-                    <div class="layui-input-inline">
-                        <select name="interest" lay-filter="aihao">
-                            <option value="0">写作</option>
-                            <option value="1">阅读</option>
-                        </select>
-                    </div>
-
-                    <label class="layui-form-label">角色：</label>
-                    <div class="layui-input-inline">
-                        <select name="interest" lay-filter="aihao">
-                            <option value="0">写作</option>
-                            <option value="1">阅读</option>
-                        </select>
+                        <input class="layui-input" type="text" name="" width="80px" placeholder="请输入角色名称">
                     </div>
 
                     <div class="layui-input-inline layui-btn-container" style="margin-left: 50px">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">查找</button>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="search">查找</button>
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
                 </div>
             </form>
 
             <div class="layui-col-md2" id="layerDemo">
-                <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">
-                        <i class="layui-icon">&#xe608;</i> 添加用户
+                <button data-method="addRole" data-type="auto" class="layui-btn layui-btn-normal">
+                        <i class="layui-icon">&#xe608;</i> 添加角色
                 </button>
             </div>
 
         </div>
 
-        <table class="layui-table" id="accountTable"
-               lay-filter="accountTable" lay-skin="line">
-<!--            <thead> lay-data="{ url:'/account/queryAllAccounts', page:true, limit:10, id:'test'}"-->
-<!--            <tr>-->
-<!--                <th lay-data="{field:'userId', align:'center', sort: true}">用户ID</th>-->
-<!--                <th lay-data="{field:'userName', align:'center'}">用户名称</th>-->
-<!--                <th lay-data="{field:'deptName', align:'center', templet: '<div>{{d.department.deptName != null ? d.department.deptName : \'\'}}</div>'}">部门名称</th>-->
-<!--                <th lay-data="{field:'userStatus', align:'center', templet: '#switchTpl'}">用户状态</th>-->
-<!--                <th lay-data="{field:'roleName', align:'center', templet: '<div>{{d.role[0].roleName != null ? d.role[0].roleName : \'\'}}</div>'}">用户角色</th>-->
-<!--                <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
+        <table class="layui-table" id="roleTable"
+               lay-filter="roleTable" lay-skin="line">
         </table>
+
     </div>
 
     <script id="barDemo" type="text/html">
@@ -80,19 +50,19 @@
     </script>
 
     <script type="text/html" id="switchTpl">
-        <input type="checkbox" name="userStatusSwitch" value="{{d.userStatus}}" lay-skin="switch" lay-text="正常|停用" disabled {{ d.userStatus == '1' ? 'checked' : '' }}/>
+        <input type="checkbox" name="roleStatusSwitch" value="{{d.roleStatus}}" lay-skin="switch" lay-text="正常|停用" disabled {{ d.roleStatus == '1' ? 'checked' : '' }}/>
     </script>
 
 
     <script charset="utf-8" src="../static/layui.js"></script>
     <script>
-        let editData;
+        var roleEditData;
         layui.use('table', function () {
             const $ = layui.$;
             const table = layui.table;
 
             //监听工具条（编辑，删除操作）
-            table.on('tool(accountTable)', function (obj) {
+            table.on('tool(roleTable)', function (obj) {
                 const data = obj.data;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
@@ -104,13 +74,13 @@
                     layer.open({
                         type: 2
                         ,offset: "auto"
-                        ,id: 'layerDemo'+"auto"
+                        ,id: 'layerDemo'+"roleEdit"
                         ,title: '用户配置'
-                        ,content: '/page/accountEdit'
+                        ,content: '/page/roleEdit'
                         ,area: ['500px','450px']
                         ,shade: 0 //不显示遮罩
                         ,success: function(layero, index){
-                            editData = data;
+                            roleEditData = data;
                         }
 
                     });
@@ -119,18 +89,18 @@
 
             // 初始化渲染
             table.render({
-                elem: '#accountTable'
-                , url: '/dept/getAllDepts' //数据接口
+                elem: '#roleTable'
+                , url: '/role/getAllRoles' //数据接口
                 , method: 'post'
                 , page: true //开启分页
                 , limit: 10
                 , cols: [
                     [
-                        { field:'userId', title: '用户ID', align:'center', sort: true},
-                        { field:'userName', title: '用户名称', align:'center'},
-                        { field:'deptName', title: '部门名称', align:'center', templet: '<div>{{d.department.deptName != null ? d.department.deptName : \'\'}}</div>'},
-                        { field:'userStatus', title: '用户状态', align:'center', templet: '#switchTpl'},
-                        { field:'roleName', title: '用户角色', align:'center', templet: '<div>{{d.role[0].roleName != null ? d.role[0].roleName : \'\'}}</div>'},
+                        { field:'roleId', title: '角色ID', align:'center', sort: true},
+                        { field:'roleCode', title: '角色代码', align:'center'},
+                        { field:'roleName', title: '角色名称', align:'center', templet: '<div>{{d.roleName != null ? d.roleName : \'\'}}</div>'},
+                        { field:'roleDesc', title: '描述', align:'center', templet: '<div>{{d.roleDesc != null ? d.roleDesc : \'\'}}</div>'},
+                        { field:'roleStatus', title: '状态', align:'center', templet: '#switchTpl'},
                         { fixed: 'right', title: '操作', width:178, align:'center', toolbar: '#barDemo'}
                     ]
                 ],
@@ -159,7 +129,7 @@
 
             //触发事件
             var active = {
-                offset: function(othis){
+                addRole: function(othis){
                     var type = othis.data('type')
                         ,text = othis.text();
 
@@ -167,8 +137,8 @@
                         type: 2
                         ,offset: type
                         ,id: 'layerDemo'+type
-                        ,title: '新增用户'
-                        ,content: '/page/accountAdd'
+                        ,title: '新增角色'
+                        ,content: '/page/roleAdd'
                         ,area: ['500px','510px']
                         ,closeBtn: 1
                     });

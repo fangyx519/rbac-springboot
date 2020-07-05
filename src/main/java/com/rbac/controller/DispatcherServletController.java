@@ -44,10 +44,30 @@ public class DispatcherServletController {
         return "deptManager";
     }
 
+    @GetMapping("/deptAdd")
+    public String deptAdd(){
+        return "dept-add";
+    }
+
+    @GetMapping("/deptEdit")
+    public String deptEdit(){
+        return "dept-edit";
+    }
+
     // ********** role **************
     @GetMapping("/roleManager")
     public String role(){
         return "roleManager";
+    }
+
+    @GetMapping("/roleAdd")
+    public String roleAdd(){
+        return "role-add";
+    }
+
+    @GetMapping("/roleEdit")
+    public String roleEdit(){
+        return "role-edit";
     }
 
     // ********** menu **************
@@ -56,10 +76,36 @@ public class DispatcherServletController {
         return "menuManager";
     }
 
+    @GetMapping("/menuAdd")
+    public String menuAdd(){
+        return "menu-add";
+    }
+
+    @GetMapping("/menuEdit")
+    public String menuEdit(){
+        return "menu-edit";
+    }
+
     // ********** auth **************
-    @GetMapping("/authManager")
-    public String auth(){
-        return "authManager";
+    @GetMapping("/resManager")
+    public String resources(){
+        return "resManager";
+    }
+
+    @GetMapping("/resAdd")
+    public String resAdd(){
+        return "res-add";
+    }
+
+    @GetMapping("/resEdit")
+    public String resEdit(){
+        return "res-edit";
+    }
+
+    // ********** log **************
+    @GetMapping("/logManager")
+    public String log(){
+        return "logManager";
     }
 
 }

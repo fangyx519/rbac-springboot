@@ -30,7 +30,7 @@
                 </div>
             </form>
 
-            <div class="layui-col-md2" id="layerDemo">
+            <div class="layui-col-md2" id="addDept">
                 <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">
                         <i class="layui-icon">&#xe608;</i> 添加部门
                 </button>
@@ -38,8 +38,8 @@
 
         </div>
 
-        <table class="layui-table" id="accountTable"
-               lay-filter="accountTable" lay-skin="line">
+        <table class="layui-table" id="deptTable"
+               lay-filter="deptTable" lay-skin="line">
         </table>
     </div>
 
@@ -64,7 +64,7 @@
             const table = layui.table;
 
             //监听工具条（编辑，删除操作）
-            table.on('tool(accountTable)', function (obj) {
+            table.on('tool(deptTable)', function (obj) {
                 const data = obj.data;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
@@ -76,7 +76,7 @@
                     layer.open({
                         type: 2
                         ,offset: "auto"
-                        ,id: 'layerDemo'+"auto"
+                        ,id: 'addDept'+"auto"
                         ,title: '用户配置'
                         ,content: '/page/accountEdit'
                         ,area: ['500px','450px']
@@ -91,7 +91,7 @@
 
             // 初始化渲染
             table.render({
-                elem: '#accountTable'
+                elem: '#deptTable'
                 , url: '/dept/getAllDepts' //数据接口
                 , method: 'post'
                 , page: true //开启分页
@@ -119,7 +119,6 @@
             });
 
 
-
         });
 
         // 新增
@@ -135,7 +134,7 @@
                     layer.open({
                         type: 2
                         ,offset: type
-                        ,id: 'layerDemo'+type
+                        ,id: 'addDept'+type
                         ,title: '新增用户'
                         ,content: '/page/accountAdd'
                         ,area: ['500px','510px']

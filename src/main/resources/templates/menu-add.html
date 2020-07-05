@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/css/layui.css"  media="all">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div class="layui-main" style="width: 400px;height: 300px; margin-top: 50px;">
+    <form class="layui-form" action="" lay-filter="form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="userName" lay-verify="userName"
+                       autocomplete="off" placeholder="请输入姓名" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-inline" id="parentDept" lay-filter="selectDepartment">
+                <select name="departmentId" id="dept"></select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" checked="" id="userStatus" name="userStatus" lay-verify="userStatus"
+                       lay-skin="switch" lay-filter="switchTest" lay-text="正常|禁用" value="1">
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block" id="role">
+                <!--<input type='radio' name='sex' value='系统管理员' title='系统管理员' checked=''>-->
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <!--<button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">赋值</button>
+                <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">取值</button>-->
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="addAccount">提交</button>
+                <button type="button" class="layui-btn" onclick="closeWindow()">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script src="../static/layui.js" charset="utf-8"></script>
+<script src="../static/jquery-3.3.1.min.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['form', 'jquery'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,$ = layui.$;
+
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.tips('温馨提示：正常状态用户可以登录系统，禁用状态用户暂时不可登录系统', data.othis)
+        });
+
+        //自定义验证规则
+        form.verify({
+            userName: function(value){
+                if(value.length == 0){
+                    return '请输入姓名！';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(addAccount)', function(formData){
+            let data = formData.field;
+            data.role = getCheckBoxValue();
+            data.userStatus = $("#userStatus").val() == 1 ? 1:0;
+            $.ajax({
+                type: "post",
+                url: "/account/addAccount",
+                data:JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // 没有走到这里
+                    if (result == 1){
+                        alert("新增成功");
+                        parent.location.reload();//刷新父页面
+                        //parent.layui.table.reload('accountTable');
+                    }else{
+                        alert("新增失败!");
+                        parent.location.reload();//刷新父页面
+                        // parent.layui.table.reload('accountTable');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg("新增失败!");
+                    parent.location.reload();//刷新父页面
+                    // parent.layui.table.reload('accountTable');
+                }
+            });
+            closeWindow();
+        });
+
+        //表单取值
+        layui.$('#LAY-component-form-getval').on('click', function(){
+            var data = form.val('form');
+            data.role = getCheckBoxValue()
+            alert(JSON.stringify(data));
+        });
+
+        $.ajax({
+            type: "get",
+            url: "/dept/getDepts",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var index = 0;index < data.length;index++){
+                    var dataTmp = data[index];
+                    $('#dept').append(new Option(dataTmp.deptName,dataTmp.deptId));//往下拉菜单里添加元素
+                }
+                form.render();
+            }
+        });
+
+        $.ajax({
+            type: "get",
+            url: "/role/getRoles",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var index = 0;index < data.length;index++){
+                    var dataTmp = data[index];
+                    $('#role').append("<input type='checkbox' name='role' value='"+dataTmp.roleId+"' title='"+dataTmp.roleName+"' lay-skin='primary'>");//往下拉菜单里添加元素
+                }
+                form.render();
+            }
+        });
+
+    });
+
+    function getCheckBoxValue() {
+        const checkbox = $("input[name='role']");
+        let roleId = '';
+
+        checkbox.each(function () {
+            if ($(this).is(':checked')){
+                if (roleId == ''){
+                    roleId += $(this).val();
+                }else {
+                    roleId += ',' + $(this).val();
+                }
+            }
+        });
+        console.log(roleId);
+       return roleId;
+    }
+
+    function closeWindow() {
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+    }
+</script>
+
+</body>
+</html>
